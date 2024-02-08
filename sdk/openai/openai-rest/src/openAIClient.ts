@@ -2,10 +2,10 @@
 // Licensed under the MIT license.
 
 import { getClient, ClientOptions } from "@azure-rest/core-client";
-import { logger } from "./logger";
+import { logger } from "./logger.js";
 import { TokenCredential, KeyCredential, isTokenCredential } from "@azure/core-auth";
-import { OpenAIClient } from "./clientDefinitions";
-import { nonAzurePolicy } from "./nonAzure";
+import { OpenAIClient } from "./clientDefinitions.js";
+import { nonAzurePolicy } from "./nonAzure.js";
 
 function isCred(cred: Record<string, any>): cred is TokenCredential | KeyCredential {
   return isTokenCredential(cred) || cred.key !== undefined;

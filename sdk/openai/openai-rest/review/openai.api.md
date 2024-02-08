@@ -4,17 +4,15 @@
 
 ```ts
 
+import { AzureKeyCredential } from '@azure/core-auth';
 import { Client } from '@azure-rest/core-client';
 import { ClientOptions } from '@azure-rest/core-client';
-import { CreateHttpPollerOptions } from '@azure/core-lro';
 import { ErrorModel } from '@azure-rest/core-client';
 import { ErrorResponse } from '@azure-rest/core-client';
 import { HttpResponse } from '@azure-rest/core-client';
 import { KeyCredential } from '@azure/core-auth';
-import { OperationState } from '@azure/core-lro';
 import { RawHttpHeaders } from '@azure/core-rest-pipeline';
 import { RequestParameters } from '@azure-rest/core-client';
-import { SimplePollerLike } from '@azure/core-lro';
 import { StreamableMethod } from '@azure-rest/core-client';
 import { TokenCredential } from '@azure/core-auth';
 
@@ -28,7 +26,7 @@ export interface AudioSpeechOptions {
 
 // @public
 export interface AudioTranscriptionOptions {
-    file: string;
+    file: File;
     filename?: string;
     language?: string;
     model?: string;
@@ -62,7 +60,7 @@ export interface AudioTranscriptionSegmentOutput {
 
 // @public
 export interface AudioTranslationOptions {
-    file: string;
+    file: File;
     filename?: string;
     model?: string;
     prompt?: string;
@@ -192,6 +190,8 @@ export interface AzureGroundingEnhancementLineSpanOutput {
 export interface AzureGroundingEnhancementOutput {
     lines: Array<AzureGroundingEnhancementLineOutput>;
 }
+
+export { AzureKeyCredential }
 
 // @public
 export interface AzureMachineLearningIndexChatExtensionConfiguration extends AzureChatExtensionConfigurationParent {
@@ -1117,9 +1117,6 @@ export interface GetImageGenerationsDefaultResponse extends HttpResponse {
 
 // @public (undocumented)
 export type GetImageGenerationsParameters = GetImageGenerationsBodyParam & RequestParameters;
-
-// @public
-export function getLongRunningPoller<TResult extends BeginAzureBatchImageGenerationLogicalResponse | BeginAzureBatchImageGenerationDefaultResponse>(client: Client, initialResponse: BeginAzureBatchImageGeneration202Response | BeginAzureBatchImageGenerationDefaultResponse, options?: CreateHttpPollerOptions<TResult, OperationState<TResult>>): Promise<SimplePollerLike<OperationState<TResult>, TResult>>;
 
 // @public
 export interface ImageGenerationDataOutput {

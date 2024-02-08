@@ -13,18 +13,20 @@
     "isomorphic"
   ],
   "license": "MIT",
-  "main": "dist/index.js",
-  "module": "./dist-esm/index.js",
+  "main": "dist/index.cjs",
+  "module": "dist-esm/src/index.js",
   "types": "./types/openai.d.ts",
+  "type": "module",
   "repository": "github:Azure/azure-sdk-for-js",
   "bugs": {
     "url": "https://github.com/Azure/azure-sdk-for-js/issues"
   },
   "files": [
     "dist/",
-    "dist-esm/",
+    "dist-esm/src",
     "types/openai.d.ts",
     "README.md",
+    "CHANGELOG.md",
     "LICENSE",
     "review/*"
   ],
@@ -65,10 +67,10 @@
     "@azure/core-rest-pipeline": "^1.14.0",
     "@azure/logger": "^1.0.0",
     "tslib": "^2.2.0",
-    "@azure/core-lro": "^2.5.4",
     "@azure/abort-controller": "^1.0.0"
   },
   "devDependencies": {
+    "@azure/core-sse": "^2.0.0",
     "@microsoft/api-extractor": "^7.31.1",
     "autorest": "latest",
     "@types/node": "^18.0.0",
