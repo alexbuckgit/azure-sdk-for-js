@@ -624,6 +624,9 @@ export interface ContentFilterResultsForPromptOutput {
 }
 
 // @public
+function createClient(openAiApiKey: KeyCredential, options?: ClientOptions): OpenAIClient;
+
+// @public
 function createClient(endpoint: string, credentials: TokenCredential | KeyCredential, options?: ClientOptions): OpenAIClient;
 export default createClient;
 
@@ -1232,6 +1235,13 @@ export interface OnYourDataVectorizationSourceParent {
 export type OpenAIClient = Client & {
     path: Routes;
 };
+
+// @public
+export class OpenAIKeyCredential implements KeyCredential {
+    constructor(key: string);
+    get key(): string;
+    update(newKey: string): void;
+}
 
 // @public
 export interface PineconeChatExtensionConfiguration extends AzureChatExtensionConfigurationParent {
