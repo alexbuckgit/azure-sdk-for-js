@@ -36,6 +36,11 @@ export async function main() {
       stream: true,
     }
   }).asNodeStream();
+
+  if(response.status !== "200") {
+    throw new Error(`Failed to get chat completions: ${JSON.stringify(response.body)}`);
+  }
+
   const sses = createSseStream(response.body! as IncomingMessage)
 
   for await (const event of sses) {
