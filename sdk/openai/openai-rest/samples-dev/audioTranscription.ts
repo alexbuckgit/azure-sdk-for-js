@@ -26,14 +26,16 @@ export async function main() {
   const client = createClient(endpoint, new AzureKeyCredential(azureApiKey));
   const deploymentName = "whisper";
   const audio = await readFile("./assets/audio/countdown.wav");
-  const response = await client.path("/deployments/{deploymentId}/audio/transcriptions", deploymentName).post({
-    body: {
-      file: createFile(audio, "countdown.wav"),
-      filename: "countdown.wav",
-      response_format: "text"
-    },
-    contentType: "multipart/form-data",
-  });
+  const response = await client
+    .path("/deployments/{deploymentId}/audio/transcriptions", deploymentName)
+    .post({
+      body: {
+        file: createFile(audio, "countdown.wav"),
+        filename: "countdown.wav",
+        response_format: "text",
+      },
+      contentType: "multipart/form-data",
+    });
 
   if (isUnexpected(response)) {
     throw new Error(`Failed to transcribe audio: ${JSON.stringify(response.body)}`);

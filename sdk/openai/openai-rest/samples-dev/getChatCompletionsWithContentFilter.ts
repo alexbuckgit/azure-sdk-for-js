@@ -23,17 +23,19 @@ export async function main() {
 
   const client = createClient(endpoint, new AzureKeyCredential(azureApiKey));
   const deploymentId = "gpt-35-turbo";
-  const response = await client.path("/deployments/{deploymentId}/chat/completions", deploymentId).post({
-    body: {
-      messages: [
-        { role: "system", content: "You are a helpful assistant. You will talk like a pirate." },
-        { role: "user", content: "Can you help me?" },
-        { role: "assistant", content: "Arrrr! Of course, me hearty! What can I do for ye?" },
-        { role: "user", content: "What's the best way to train a parrot?" },
-      ],
-      max_tokens: 128,
-    }
-  });
+  const response = await client
+    .path("/deployments/{deploymentId}/chat/completions", deploymentId)
+    .post({
+      body: {
+        messages: [
+          { role: "system", content: "You are a helpful assistant. You will talk like a pirate." },
+          { role: "user", content: "Can you help me?" },
+          { role: "assistant", content: "Arrrr! Of course, me hearty! What can I do for ye?" },
+          { role: "user", content: "What's the best way to train a parrot?" },
+        ],
+        max_tokens: 128,
+      },
+    });
 
   if (isUnexpected(response)) {
     throw new Error(`Failed to get chat completions: ${JSON.stringify(response.body)}`);

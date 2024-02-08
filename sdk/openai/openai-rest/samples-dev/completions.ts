@@ -25,12 +25,14 @@ export async function main() {
 
   const client = createClient(endpoint, new AzureKeyCredential(azureApiKey));
   const deploymentName = "gpt-35-turbo-instruct";
-  const response = await client.path("/deployments/{deploymentId}/completions", deploymentName).post({
-    body: {
-      prompt,
-      max_tokens: 150,
-    },
-  });
+  const response = await client
+    .path("/deployments/{deploymentId}/completions", deploymentName)
+    .post({
+      body: {
+        prompt,
+        max_tokens: 150,
+      },
+    });
 
   if (isUnexpected(response)) {
     throw new Error(`Failed to get completions: ${JSON.stringify(response.body)}`);

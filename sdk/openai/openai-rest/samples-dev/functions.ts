@@ -42,16 +42,17 @@ export async function main() {
 
   const client = createClient(endpoint, new AzureKeyCredential(azureApiKey));
   const deploymentName = "gpt-4-0613";
-  const response = await client.path("/deployments/{deploymentId}/chat/completions", deploymentName).post({
-    body: {
-      messages: [{ role: "user", content: "What's the weather like in Boston?" }],
-      functions: [getCurrentWeather],
-    }
-  });
+  const response = await client
+    .path("/deployments/{deploymentId}/chat/completions", deploymentName)
+    .post({
+      body: {
+        messages: [{ role: "user", content: "What's the weather like in Boston?" }],
+        functions: [getCurrentWeather],
+      },
+    });
 
   if (isUnexpected(response)) {
     throw new Error(`Failed to get chat completions: ${JSON.stringify(response.body)}`);
-  
   }
 
   for (const choice of response.body.choices) {

@@ -30,13 +30,15 @@ export async function main() {
 
   const client = createClient(endpoint, new AzureKeyCredential(azureApiKey));
   const deploymentName = "dall-e-3";
-  const response = await client.path("/deployments/{deploymentId}/images/generations", deploymentName).post({
-    body: {
-      prompt,
-      n,
-      size,
-    },
-  });
+  const response = await client
+    .path("/deployments/{deploymentId}/images/generations", deploymentName)
+    .post({
+      body: {
+        prompt,
+        n,
+        size,
+      },
+    });
 
   if (isUnexpected(response)) {
     throw new Error(`Failed to generate images: ${JSON.stringify(response.body)}`);

@@ -28,11 +28,13 @@ export async function main() {
   console.log("== Get embeddings sample ==");
 
   const client = createClient(endpoint, new AzureKeyCredential(azureApiKey));
-  const response = await client.path("/deployments/{deploymentId}/embeddings", deploymentName).post({
-    body: {
-      input: prompt,
-    }
-  });
+  const response = await client
+    .path("/deployments/{deploymentId}/embeddings", deploymentName)
+    .post({
+      body: {
+        input: prompt,
+      },
+    });
 
   if (isUnexpected(response)) {
     throw new Error(`Failed to get embeddings: ${JSON.stringify(response.body)}`);

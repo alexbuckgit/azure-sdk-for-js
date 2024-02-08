@@ -36,19 +36,23 @@ export async function main() {
 
   const client = createClient(endpoint, new AzureKeyCredential(azureApiKey));
   const deploymentName = "gpt-35-turbo";
-  const response = await client.path("/deployments/{deploymentId}/chat/completions", deploymentName).post({
-    body: {
-      messages,
-      data_sources: [{
-        type: "azure_search",
-        parameters: {
-          endpoint: azureSearchEndpoint,
-          authentication: { key: azureSearchAdminKey, type: "api_key" },
-          index_name: azureSearchIndexName,
-        }
-      }]
-    }
-  })  
+  const response = await client
+    .path("/deployments/{deploymentId}/chat/completions", deploymentName)
+    .post({
+      body: {
+        messages,
+        data_sources: [
+          {
+            type: "azure_search",
+            parameters: {
+              endpoint: azureSearchEndpoint,
+              authentication: { key: azureSearchAdminKey, type: "api_key" },
+              index_name: azureSearchIndexName,
+            },
+          },
+        ],
+      },
+    });
   if (isUnexpected(response)) {
     throw new Error(`Failed to get chat completions: ${JSON.stringify(response.body)}`);
   }
