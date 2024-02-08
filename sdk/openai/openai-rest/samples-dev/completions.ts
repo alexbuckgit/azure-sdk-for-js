@@ -24,8 +24,8 @@ export async function main() {
   console.log("== Get completions Sample ==");
 
   const client = createClient(endpoint, new AzureKeyCredential(azureApiKey));
-  const deploymentId = "text-davinci-003";
-  const response = await client.path("/deployments/{deploymentId}/completions", deploymentId).post({
+  const deploymentName = "gpt-35-turbo-instruct";
+  const response = await client.path("/deployments/{deploymentId}/completions", deploymentName).post({
     body: {
       prompt,
       max_tokens: 150,

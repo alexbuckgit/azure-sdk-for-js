@@ -30,8 +30,9 @@ export async function main() {
     body: {
       file: createFile(audio, "countdown.wav"),
       filename: "countdown.wav",
-      response_format: "simple_json"
-    }
+      response_format: "text"
+    },
+    contentType: "multipart/form-data",
   });
 
   if (isUnexpected(response)) {

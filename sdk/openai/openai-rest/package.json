@@ -91,5 +91,16 @@
         "prefix": "userAgentInfo"
       }
     ]
+  },
+  "//sampleConfiguration": {
+    "productName": "Azure OpenAI",
+    "productSlugs": [
+      "azure",
+      "azure-cognitive-services",
+      "azure-openai"
+    ],
+    "requiredResources": {
+      "Azure Cognitive Services instance": "https://learn.microsoft.com/azure/cognitive-services/openai/how-to/create-resource"
+    }
   }
 }

@@ -23,7 +23,7 @@ export async function main() {
   console.log("== Get completions using OpenAI Sample ==");
 
   const client = createClient(new OpenAIKeyCredential(openApiKey));
-  const model = "text-davinci-003";
+  const model = "gpt-3.5-turbo-instruct";
   const response = await client.path("/deployments/{deploymentId}/completions", "").post({
     body: {
       prompt,

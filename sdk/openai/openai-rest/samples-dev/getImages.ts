@@ -23,7 +23,7 @@ const prompt = "a monkey eating a banana";
 const size = "1024x1024";
 
 // The number of images to generate
-const n = 3;
+const n = 1;
 
 export async function main() {
   console.log("== Batch Image Generation ==");
