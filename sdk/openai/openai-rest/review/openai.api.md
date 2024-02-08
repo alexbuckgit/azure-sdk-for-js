@@ -19,6 +19,14 @@ import { StreamableMethod } from '@azure-rest/core-client';
 import { TokenCredential } from '@azure/core-auth';
 
 // @public
+export interface AudioSpeechOptions {
+    input: string;
+    response_format?: string;
+    speed?: number;
+    voice: string;
+}
+
+// @public
 export interface AudioTranscriptionOptions {
     file: string;
     filename?: string;
@@ -97,7 +105,7 @@ export interface AzureChatEnhancementsOutput {
 }
 
 // @public
-export type AzureChatExtensionConfiguration = AzureChatExtensionConfigurationParent | AzureCognitiveSearchChatExtensionConfiguration | AzureMachineLearningIndexChatExtensionConfiguration | AzureCosmosDBChatExtensionConfiguration | ElasticsearchChatExtensionConfiguration | PineconeChatExtensionConfiguration;
+export type AzureChatExtensionConfiguration = AzureChatExtensionConfigurationParent | AzureSearchChatExtensionConfiguration | AzureMachineLearningIndexChatExtensionConfiguration | AzureCosmosDBChatExtensionConfiguration | ElasticsearchChatExtensionConfiguration | PineconeChatExtensionConfiguration;
 
 // @public
 export interface AzureChatExtensionConfigurationParent {
@@ -106,8 +114,18 @@ export interface AzureChatExtensionConfigurationParent {
 }
 
 // @public
+export interface AzureChatExtensionDataSourceResponseCitationOutput {
+    chunk_id?: string;
+    content: string;
+    filepath?: string;
+    title?: string;
+    url?: string;
+}
+
+// @public
 export interface AzureChatExtensionsMessageContextOutput {
-    messages?: Array<ChatResponseMessageOutput>;
+    citations?: Array<AzureChatExtensionDataSourceResponseCitationOutput>;
+    intent?: string;
 }
 
 // @public
@@ -121,69 +139,33 @@ export interface AzureChatOCREnhancementConfiguration {
 }
 
 // @public
-export interface AzureCognitiveSearchChatExtensionConfiguration extends AzureChatExtensionConfigurationParent {
-    parameters: AzureCognitiveSearchChatExtensionParameters;
-    type: "AzureCognitiveSearch";
-}
-
-// @public
-export interface AzureCognitiveSearchChatExtensionParameters {
-    authentication?: OnYourDataAuthenticationOptions;
-    embeddingDependency?: OnYourDataVectorizationSource;
-    embeddingEndpoint?: string;
-    embeddingKey?: string;
-    endpoint: string;
-    fieldsMapping?: AzureCognitiveSearchIndexFieldMappingOptions;
-    filter?: string;
-    indexName: string;
-    inScope?: boolean;
-    key?: string;
-    queryType?: string;
-    roleInformation?: string;
-    semanticConfiguration?: string;
-    strictness?: number;
-    topNDocuments?: number;
-}
-
-// @public
-export interface AzureCognitiveSearchIndexFieldMappingOptions {
-    contentFields?: string[];
-    contentFieldsSeparator?: string;
-    filepathField?: string;
-    imageVectorFields?: string[];
-    titleField?: string;
-    urlField?: string;
-    vectorFields?: string[];
-}
-
-// @public
 export interface AzureCosmosDBChatExtensionConfiguration extends AzureChatExtensionConfigurationParent {
     parameters: AzureCosmosDBChatExtensionParameters;
-    type: "AzureCosmosDB";
+    type: "azure_cosmos_db";
 }
 
 // @public
 export interface AzureCosmosDBChatExtensionParameters {
     authentication?: OnYourDataAuthenticationOptions;
-    containerName: string;
-    databaseName: string;
-    embeddingDependency: OnYourDataVectorizationSource;
-    fieldsMapping: AzureCosmosDBFieldMappingOptions;
-    indexName: string;
-    inScope?: boolean;
-    roleInformation?: string;
+    container_name: string;
+    database_name: string;
+    embedding_dependency: OnYourDataVectorizationSource;
+    fields_mapping: AzureCosmosDBFieldMappingOptions;
+    in_scope?: boolean;
+    index_name: string;
+    role_information?: string;
     strictness?: number;
-    topNDocuments?: number;
+    top_n_documents?: number;
 }
 
 // @public
 export interface AzureCosmosDBFieldMappingOptions {
-    contentFields: string[];
-    contentFieldsSeparator?: string;
-    filepathField?: string;
-    titleField?: string;
-    urlField?: string;
-    vectorFields: string[];
+    content_fields: string[];
+    content_fields_separator?: string;
+    filepath_field?: string;
+    title_field?: string;
+    url_field?: string;
+    vector_fields: string[];
 }
 
 // @public
@@ -214,20 +196,53 @@ export interface AzureGroundingEnhancementOutput {
 // @public
 export interface AzureMachineLearningIndexChatExtensionConfiguration extends AzureChatExtensionConfigurationParent {
     parameters: AzureMachineLearningIndexChatExtensionParameters;
-    type: "AzureMLIndex";
+    type: "azure_ml_index";
 }
 
 // @public
 export interface AzureMachineLearningIndexChatExtensionParameters {
     authentication?: OnYourDataAuthenticationOptions;
     filter?: string;
-    inScope?: boolean;
+    in_scope?: boolean;
     name: string;
-    projectResourceId: string;
-    roleInformation?: string;
+    project_resource_id: string;
+    role_information?: string;
     strictness?: number;
-    topNDocuments?: number;
+    top_n_documents?: number;
     version: string;
+}
+
+// @public
+export interface AzureSearchChatExtensionConfiguration extends AzureChatExtensionConfigurationParent {
+    parameters: AzureSearchChatExtensionParameters;
+    type: "azure_search";
+}
+
+// @public
+export interface AzureSearchChatExtensionParameters {
+    authentication?: OnYourDataAuthenticationOptions;
+    embedding_dependency?: OnYourDataVectorizationSource;
+    endpoint: string;
+    fields_mapping?: AzureSearchIndexFieldMappingOptions;
+    filter?: string;
+    in_scope?: boolean;
+    index_name: string;
+    query_type?: string;
+    role_information?: string;
+    semantic_configuration?: string;
+    strictness?: number;
+    top_n_documents?: number;
+}
+
+// @public
+export interface AzureSearchIndexFieldMappingOptions {
+    content_fields?: string[];
+    content_fields_separator?: string;
+    filepath_field?: string;
+    image_vector_fields?: string[];
+    title_field?: string;
+    url_field?: string;
+    vector_fields?: string[];
 }
 
 // @public
@@ -293,6 +308,11 @@ export interface BeginAzureBatchImageGenerationLogicalResponse extends HttpRespo
 export type BeginAzureBatchImageGenerationParameters = BeginAzureBatchImageGenerationBodyParam & RequestParameters;
 
 // @public
+export interface ChatChoiceLogProbabilityInfoOutput {
+    content: Array<ChatTokenLogProbabilityResultOutput> | null;
+}
+
+// @public
 export interface ChatChoiceOutput {
     content_filter_results?: ContentFilterResultsForChoiceOutput;
     delta?: ChatResponseMessageOutput;
@@ -300,6 +320,7 @@ export interface ChatChoiceOutput {
     finish_details?: ChatFinishDetailsOutput;
     finish_reason: string | null;
     index: number;
+    logprobs: ChatChoiceLogProbabilityInfoOutput | null;
     message?: ChatResponseMessageOutput;
 }
 
@@ -348,12 +369,13 @@ export interface ChatCompletionsNamedToolSelectionParent {
 
 // @public
 export interface ChatCompletionsOptions {
-    dataSources?: Array<AzureChatExtensionConfiguration>;
+    data_sources?: Array<AzureChatExtensionConfiguration>;
     enhancements?: AzureChatEnhancementConfiguration;
     frequency_penalty?: number;
     function_call?: string | FunctionName;
     functions?: Array<FunctionDefinition>;
     logit_bias?: Record<string, number>;
+    logprobs?: boolean | null;
     max_tokens?: number;
     messages: Array<ChatRequestMessage>;
     model?: string;
@@ -366,6 +388,7 @@ export interface ChatCompletionsOptions {
     temperature?: number;
     tool_choice?: string | ChatCompletionsNamedToolSelection;
     tools?: Array<ChatCompletionsToolDefinition>;
+    top_logprobs?: number | null;
     top_p?: number;
     user?: string;
 }
@@ -515,6 +538,21 @@ export interface ChatResponseMessageOutput {
 }
 
 // @public
+export interface ChatTokenLogProbabilityInfoOutput {
+    bytes: number[] | null;
+    logprob: number;
+    token: string;
+}
+
+// @public
+export interface ChatTokenLogProbabilityResultOutput {
+    bytes: number[] | null;
+    logprob: number;
+    token: string;
+    top_logprobs: Array<ChatTokenLogProbabilityInfoOutput> | null;
+}
+
+// @public
 export interface ChoiceOutput {
     content_filter_results?: ContentFilterResultsForChoiceOutput;
     finish_reason: string | null;
@@ -638,31 +676,31 @@ export interface DeploymentOutput {
 // @public
 export interface ElasticsearchChatExtensionConfiguration extends AzureChatExtensionConfigurationParent {
     parameters: ElasticsearchChatExtensionParameters;
-    type: "Elasticsearch";
+    type: "elasticsearch";
 }
 
 // @public
 export interface ElasticsearchChatExtensionParameters {
     authentication?: OnYourDataAuthenticationOptions;
-    embeddingDependency?: OnYourDataVectorizationSource;
+    embedding_dependency?: OnYourDataVectorizationSource;
     endpoint: string;
-    fieldsMapping?: ElasticsearchIndexFieldMappingOptions;
-    indexName: string;
-    inScope?: boolean;
-    queryType?: string;
-    roleInformation?: string;
+    fields_mapping?: ElasticsearchIndexFieldMappingOptions;
+    in_scope?: boolean;
+    index_name: string;
+    query_type?: string;
+    role_information?: string;
     strictness?: number;
-    topNDocuments?: number;
+    top_n_documents?: number;
 }
 
 // @public
 export interface ElasticsearchIndexFieldMappingOptions {
-    contentFields?: string[];
-    contentFieldsSeparator?: string;
-    filepathField?: string;
-    titleField?: string;
-    urlField?: string;
-    vectorFields?: string[];
+    content_fields?: string[];
+    content_fields_separator?: string;
+    filepath_field?: string;
+    title_field?: string;
+    url_field?: string;
+    vector_fields?: string[];
 }
 
 // @public
@@ -674,6 +712,7 @@ export interface EmbeddingItemOutput {
 // @public
 export interface EmbeddingsOptions {
     input: string[];
+    input_type?: string;
     model?: string;
     user?: string;
 }
@@ -713,6 +752,42 @@ export interface FunctionDefinition {
 export interface FunctionName {
     name: string;
 }
+
+// @public (undocumented)
+export interface GetAudioSpeech {
+    post(options?: GetAudioSpeechParameters): StreamableMethod<GetAudioSpeech200Response | GetAudioSpeechDefaultResponse>;
+}
+
+// @public
+export interface GetAudioSpeech200Response extends HttpResponse {
+    body: Uint8Array;
+    // (undocumented)
+    status: "200";
+}
+
+// @public (undocumented)
+export interface GetAudioSpeechBodyParam {
+    // (undocumented)
+    body?: AudioSpeechOptions;
+}
+
+// @public (undocumented)
+export interface GetAudioSpeechDefaultHeaders {
+    "x-ms-error-code"?: string;
+}
+
+// @public (undocumented)
+export interface GetAudioSpeechDefaultResponse extends HttpResponse {
+    // (undocumented)
+    body: ErrorResponse;
+    // (undocumented)
+    headers: RawHttpHeaders & GetAudioSpeechDefaultHeaders;
+    // (undocumented)
+    status: string;
+}
+
+// @public (undocumented)
+export type GetAudioSpeechParameters = GetAudioSpeechBodyParam & RequestParameters;
 
 // @public (undocumented)
 export interface GetAudioTranscriptionAsPlainText {
@@ -933,43 +1008,6 @@ export interface GetChatCompletionsDefaultResponse extends HttpResponse {
 export type GetChatCompletionsParameters = GetChatCompletionsBodyParam & RequestParameters;
 
 // @public (undocumented)
-export interface GetChatCompletionsWithAzureExtensions {
-    post(options?: GetChatCompletionsWithAzureExtensionsParameters): StreamableMethod<GetChatCompletionsWithAzureExtensions200Response | GetChatCompletionsWithAzureExtensionsDefaultResponse>;
-}
-
-// @public
-export interface GetChatCompletionsWithAzureExtensions200Response extends HttpResponse {
-    // (undocumented)
-    body: ChatCompletionsOutput;
-    // (undocumented)
-    status: "200";
-}
-
-// @public (undocumented)
-export interface GetChatCompletionsWithAzureExtensionsBodyParam {
-    // (undocumented)
-    body?: ChatCompletionsOptions;
-}
-
-// @public (undocumented)
-export interface GetChatCompletionsWithAzureExtensionsDefaultHeaders {
-    "x-ms-error-code"?: string;
-}
-
-// @public (undocumented)
-export interface GetChatCompletionsWithAzureExtensionsDefaultResponse extends HttpResponse {
-    // (undocumented)
-    body: ErrorResponse;
-    // (undocumented)
-    headers: RawHttpHeaders & GetChatCompletionsWithAzureExtensionsDefaultHeaders;
-    // (undocumented)
-    status: string;
-}
-
-// @public (undocumented)
-export type GetChatCompletionsWithAzureExtensionsParameters = GetChatCompletionsWithAzureExtensionsBodyParam & RequestParameters;
-
-// @public (undocumented)
 export interface GetCompletions {
     post(options?: GetCompletionsParameters): StreamableMethod<GetCompletions200Response | GetCompletionsDefaultResponse>;
 }
@@ -1133,10 +1171,10 @@ export function isUnexpected(response: GetCompletions200Response | GetCompletion
 export function isUnexpected(response: GetChatCompletions200Response | GetChatCompletionsDefaultResponse): response is GetChatCompletionsDefaultResponse;
 
 // @public (undocumented)
-export function isUnexpected(response: GetChatCompletionsWithAzureExtensions200Response | GetChatCompletionsWithAzureExtensionsDefaultResponse): response is GetChatCompletionsWithAzureExtensionsDefaultResponse;
+export function isUnexpected(response: GetImageGenerations200Response | GetImageGenerationsDefaultResponse): response is GetImageGenerationsDefaultResponse;
 
 // @public (undocumented)
-export function isUnexpected(response: GetImageGenerations200Response | GetImageGenerationsDefaultResponse): response is GetImageGenerationsDefaultResponse;
+export function isUnexpected(response: GetAudioSpeech200Response | GetAudioSpeechDefaultResponse): response is GetAudioSpeechDefaultResponse;
 
 // @public (undocumented)
 export function isUnexpected(response: GetEmbeddings200Response | GetEmbeddingsDefaultResponse): response is GetEmbeddingsDefaultResponse;
@@ -1154,14 +1192,14 @@ export interface MaxTokensFinishDetailsOutput extends ChatFinishDetailsOutputPar
 
 // @public
 export interface OnYourDataAccessTokenAuthenticationOptions extends OnYourDataAuthenticationOptionsParent {
-    accessToken: string;
-    type: "AccessToken";
+    access_token: string;
+    type: "access_token";
 }
 
 // @public
 export interface OnYourDataApiKeyAuthenticationOptions extends OnYourDataAuthenticationOptionsParent {
     key: string;
-    type: "APIKey";
+    type: "api_key";
 }
 
 // @public
@@ -1175,51 +1213,51 @@ export interface OnYourDataAuthenticationOptionsParent {
 
 // @public
 export interface OnYourDataConnectionStringAuthenticationOptions extends OnYourDataAuthenticationOptionsParent {
-    connectionString: string;
-    type: "ConnectionString";
+    connection_string: string;
+    type: "connection_string";
 }
 
 // @public
 export interface OnYourDataDeploymentNameVectorizationSource extends OnYourDataVectorizationSourceParent {
-    deploymentName: string;
-    type: "DeploymentName";
+    deployment_name: string;
+    type: "deployment_name";
 }
 
 // @public
 export interface OnYourDataEncodedApiKeyAuthenticationOptions extends OnYourDataAuthenticationOptionsParent {
-    encodedApiKey: string;
-    type: "EncodedAPIKey";
+    encoded_api_key: string;
+    type: "encoded_api_key";
 }
 
 // @public
 export interface OnYourDataEndpointVectorizationSource extends OnYourDataVectorizationSourceParent {
     authentication: OnYourDataAuthenticationOptions;
     endpoint: string;
-    type: "Endpoint";
+    type: "endpoint";
 }
 
 // @public
 export interface OnYourDataKeyAndKeyIdAuthenticationOptions extends OnYourDataAuthenticationOptionsParent {
     key: string;
-    keyId: string;
-    type: "KeyAndKeyId";
+    key_id: string;
+    type: "key_and_key_id";
 }
 
 // @public
 export interface OnYourDataModelIdVectorizationSource extends OnYourDataVectorizationSourceParent {
-    modelId: string;
-    type: "ModelId";
+    model_id: string;
+    type: "model_id";
 }
 
 // @public
 export interface OnYourDataSystemAssignedManagedIdentityAuthenticationOptions extends OnYourDataAuthenticationOptionsParent {
-    type: "SystemAssignedManagedIdentity";
+    type: "system_assigned_managed_identity";
 }
 
 // @public
 export interface OnYourDataUserAssignedManagedIdentityAuthenticationOptions extends OnYourDataAuthenticationOptionsParent {
-    managedIdentityResourceId: string;
-    type: "UserAssignedManagedIdentity";
+    managed_identity_resource_id: string;
+    type: "user_assigned_managed_identity";
 }
 
 // @public
@@ -1252,23 +1290,23 @@ export interface PineconeChatExtensionConfiguration extends AzureChatExtensionCo
 // @public
 export interface PineconeChatExtensionParameters {
     authentication?: OnYourDataAuthenticationOptions;
-    embeddingDependency: OnYourDataVectorizationSource;
+    embedding_dependency: OnYourDataVectorizationSource;
     environment: string;
-    fieldsMapping: PineconeFieldMappingOptions;
-    indexName: string;
-    inScope?: boolean;
-    roleInformation?: string;
+    fields_mapping: PineconeFieldMappingOptions;
+    in_scope?: boolean;
+    index_name: string;
+    role_information?: string;
     strictness?: number;
-    topNDocuments?: number;
+    top_n_documents?: number;
 }
 
 // @public
 export interface PineconeFieldMappingOptions {
-    contentFields: string[];
-    contentFieldsSeparator?: string;
-    filepathField?: string;
-    titleField?: string;
-    urlField?: string;
+    content_fields: string[];
+    content_fields_separator?: string;
+    filepath_field?: string;
+    title_field?: string;
+    url_field?: string;
 }
 
 // @public (undocumented)
@@ -1277,8 +1315,8 @@ export interface Routes {
     (path: "/deployments/{deploymentId}/audio/translations", deploymentId: string): GetAudioTranslationAsPlainText;
     (path: "/deployments/{deploymentId}/completions", deploymentId: string): GetCompletions;
     (path: "/deployments/{deploymentId}/chat/completions", deploymentId: string): GetChatCompletions;
-    (path: "/deployments/{deploymentId}/extensions/chat/completions", deploymentId: string): GetChatCompletionsWithAzureExtensions;
     (path: "/deployments/{deploymentId}/images/generations", deploymentId: string): GetImageGenerations;
+    (path: "/deployments/{deploymentId}/audio/speech", deploymentId: string): GetAudioSpeech;
     (path: "/deployments/{deploymentId}/embeddings", deploymentId: string): GetEmbeddings;
     (path: "/operations/images/{operationId}", operationId: string): GetAzureBatchImageGenerationOperationStatus;
     (path: "/images/generations:submit"): BeginAzureBatchImageGeneration;

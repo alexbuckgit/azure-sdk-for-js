@@ -8,6 +8,7 @@ import {
   CompletionsOptions,
   ChatCompletionsOptions,
   ImageGenerationOptions,
+  AudioSpeechOptions,
   EmbeddingsOptions,
 } from "./models";
 
@@ -65,18 +66,18 @@ export interface GetChatCompletionsBodyParam {
 
 export type GetChatCompletionsParameters = GetChatCompletionsBodyParam & RequestParameters;
 
-export interface GetChatCompletionsWithAzureExtensionsBodyParam {
-  body?: ChatCompletionsOptions;
-}
-
-export type GetChatCompletionsWithAzureExtensionsParameters =
-  GetChatCompletionsWithAzureExtensionsBodyParam & RequestParameters;
-
 export interface GetImageGenerationsBodyParam {
   body?: ImageGenerationOptions;
 }
 
 export type GetImageGenerationsParameters = GetImageGenerationsBodyParam & RequestParameters;
+
+export interface GetAudioSpeechBodyParam {
+  body?: AudioSpeechOptions;
+}
+
+export type GetAudioSpeechParameters = GetAudioSpeechBodyParam &
+  RequestParameters;
 
 export interface GetEmbeddingsBodyParam {
   body?: EmbeddingsOptions;
